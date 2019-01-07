@@ -78,6 +78,8 @@ const config = (isDebug) => {
     });
 
     // Configuration for server-side (prerendering) bundle suitable for running in Node
+    // Run the following to create vendor-manifest.json:
+    // webpack --config webpack.config.vendor.js
     const serverBundleConfig = merge(sharedConfig(), {
         resolve: { mainFields: ['main'] },
         entry: { 'main-server': './client/boot-server.tsx' },

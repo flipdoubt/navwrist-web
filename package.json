@@ -92,6 +92,7 @@
     "typescript-plugin-styled-components": "^1.0.0",
     "url-loader": "1.1.1",
     "webpack": "4.28.3",
+    "webpack-cli": "^3.2.0",
     "webpack-dev-middleware": "^3.3.0",
     "webpack-hot-middleware": "2.24.2",
     "webpack-merge": "4.2.1"
