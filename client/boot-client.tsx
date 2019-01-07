@@ -1,13 +1,11 @@
+import '@atlaskit/css-reset';
 import './css/site.css';
-import 'bootstrap';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
+import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import configureStore from './configureStore';
-import { ApplicationState } from './store';
+import { Layout } from './components/UI/Layout';
 import * as RoutesModule from './routes';
 let routes = RoutesModule.routes;
 
@@ -15,19 +13,15 @@ let routes = RoutesModule.routes;
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href')!;
 const history = createBrowserHistory({ basename: baseUrl });
 
-// Get the application-wide store instance, prepopulating with state from the server where available.
-const initialState = (window as any).initialReduxState as ApplicationState;
-const store = configureStore(history, initialState);
-
 function renderApp() {
     // This code starts up the React app when it runs in a browser. It sets up the routing configuration
     // and injects the app into a DOM element.
-    const renderMethod = !!module.hot ? ReactDOM.render : ReactDOM.hydrate;
-    ReactDOM.hydrate(
+    const renderMethod = module.hot ? ReactDOM.render : ReactDOM.hydrate;
+    renderMethod(
         <AppContainer>
-            <Provider store={ store }>
-                <ConnectedRouter history={ history } children={ routes } />
-            </Provider>
+          <Layout>
+              <Router children={routes} history={history} />
+          </Layout>
         </AppContainer>,
         document.getElementById('react-app')
     );
