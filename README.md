@@ -1,4 +1,4 @@
-Navwrist
+NAVWRIST-WEB
 ==================
 
 A tool to navigate the world of office ping-pong competition.
@@ -23,22 +23,16 @@ Based on [aspnet-starter-kit-2.0](https://github.com/Luteceo/aspnet-starter-kit-
 
 ### Getting Started
 
-**Step 1**. Clone the latest version of **ASP.NET Core Starter Kit 2.0** on your local machine by running:
+**Step 1**. Clone the latest version on your local machine by running:
 
 ```shell
-$ git clone -o aspnet-starter-kit -b master --single-branch \
-      https://github.com/Luteceo/aspnet-starter-kit-2.0 MyApp
+$ git clone -o navwrist-web -b master --single-branch \
+      https://github.com/flipdoubt/navwrist-web MyApp
 $ cd MyApp
 ```
 
 **Step 2**. Install project dependencies listed in [`project.json`](server/project.json) and
-[`package.json`](package.json) files: 
-
-```shell
-$ npm install                   # Install both Node.js and .NET Core dependencies
-```
-
-or using Yarn:
+[`package.json`](package.json) files using Yarn:
 
 ```shell
 $ yarn install                   # Install both Node.js and .NET Core dependencies
@@ -47,10 +41,16 @@ $ yarn install                   # Install both Node.js and .NET Core dependenci
 **Step 3**. Finally, launch your web app:
 
 ```shell
-$ node run start                      # Compile and lanch the app, same as running: npm start
+$ yarn start                      # Compile and lanch the app
 ```
 
 The app should become available at [http://localhost:5000/](http://localhost:5000/).
 See [`run.js`](run.js) for other available commands such as `node run build` etc.
 You can also run your app in a release (production) mode by running `node run --release`, or without
 Hot Module Replacement (HMR) by running `node run --no-hmr`.
+
+### TODO
+* Style with [Bulma](https://bulma.io/)
+* Javascript data model
+* Database
+* The slightest bit of functionality
