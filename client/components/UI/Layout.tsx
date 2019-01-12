@@ -11,7 +11,7 @@ export class Layout extends React.Component<{}, {}> {
   public render() {
     return (
       <Container className='layout'>
-        <h1>Ping Pong Pi</h1>
+        <h1>navwrist-web</h1>
         { this.props.children }
       </Container>
     );
