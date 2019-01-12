@@ -1,23 +1,26 @@
+html {
+  font-size: 10px; /* Make everything ten-based. */;
+  font-family: "Helvetica Neue",Helvetica,Arial,Verdana,Tahoma, sans-serif;
+}
 h1, h2, h3 {
   margin-top: 1.25rem;
   margin-bottom: 0.625rem;
 }
 
 .page-padding {
-  padding: 1em;
+  padding: 1rem;
 }
 
-.layout {
+body {
   background-color: #3C4A57;
   color: #f5f8fa;
-  font-family: "Helvetica Neue",Helvetica,Arial,Verdana,Tahoma, Sans;
+
 }
 
 .layout h1 {
   color: #f5f8fa;
   font-weight: 400;
-  font-size: 2.125rem;
-  line-height: 2.5rem;
+  font-size: 2.5rem;
 }
 
 .section {
@@ -28,16 +31,17 @@ h1, h2, h3 {
 }
 
 .section {
-  margin: 0.25em 0 0.5em 0;
-  padding: 0.5em;
+  margin: 0.25rem 0 0.5em 0;
+  padding: 0.5rem;
 }
 
 .section h2 {
   color: #A6B2BC;
+  font-size: 1.75rem;
 }
 
 .sub-section {
   background-color: #333F4B;
   border-radius: 2px;
-  padding: 0.5em;
+  padding: 0.5rem;
 }
