@@ -1,63 +1,8 @@
-html {
-  font-size: 10px; /* Make everything ten-based. */
+html,
+body {
   font-family: "Helvetica Neue", Helvetica, Arial, Verdana, Tahoma, sans-serif;
 }
-h1,
-h2,
-h3 {
-  margin-top: 1.25rem;
-  margin-bottom: 0.625rem;
-}
 
-.page-padding {
-  padding: 1rem;
-}
-
-body {
-  background-color: #10171e; /*#3C4A57;*/
-  color: #f5f8fa;
-}
-
-.layout {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.layout h1 {
-  color: #f5f8fa;
-  font-weight: 600;
-  font-size: 2.5rem;
-  justify-self: left;
-  text-align: left;
-}
-
-.section {
-  border: 1px solid #2c3741;
-  border-radius: 3px;
-  width: 100vw;
-  max-width: 60rem;
-}
-
-.section {
-  margin: 0.25rem 0 0.5em 0;
-  padding: 0.5rem;
-}
-
-.section h2 {
-  color: #91d2fa; /* #a6b2bc;*/
-  font-size: 1.75rem;
-}
-
-.sub-section {
-  /* background-color: #333F4B; */
-  background-color: #15202b;
-  border-radius: 2px;
-  padding: 0.5rem;
-  font-size: 1.6rem;
+#app {
+  height: 100vh;
 }

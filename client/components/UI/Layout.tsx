@@ -1,20 +1,26 @@
-import * as React from 'react';
-import Styled from 'styled-components';
+import * as React from "react";
+import { Section, Container, Navbar, Header } from "react-bulma-components";
+import styled from "styled-components";
 
-const Container = Styled.div`
-  padding: 1em;
-  min-height: 100vh;
+const Logo = styled.div`
+  font-size: 2rem;
 `;
 
-// Navbar and footer would go here.
 export class Layout extends React.Component<{}, {}> {
   public render() {
     return (
-      <Container className='layout'>
-        <h1>navwrist-web</h1>
-        { this.props.children }
-      </Container>
+      <React.Fragment>
+        <Navbar className="is-dark is-fixed">
+          <Navbar.Brand>
+            <Navbar.Item>
+              <Logo>navwrist-web</Logo>
+            </Navbar.Item>
+          </Navbar.Brand>
+        </Navbar>
+        <Section>
+          <Container>{this.props.children}</Container>
+        </Section>
+      </React.Fragment>
     );
   }
 }
-
