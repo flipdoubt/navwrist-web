@@ -1,5 +1,5 @@
 {
-  "name": "Server",
+  "name": "server",
   "private": true,
   "version": "0.1.0",
   "engines": {
@@ -23,7 +23,6 @@
     "collectCoverageFrom": [
       "client/**/*.{js,ts,jsx,tsx,mjs}"
     ],
-    "mapCoverage": true,
     "testMatch": [
       "<rootDir>/client/**/__tests__/**/*.{js,ts,jsx,tsx,mjs}",
       "<rootDir>/client/**/?(*.)(spec|test).{js,ts,jsx,tsx,mjs}"
