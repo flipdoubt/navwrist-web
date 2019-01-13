@@ -19,9 +19,10 @@ export default class Page extends React.Component<
   }
 
   public componentDidMount(): void {
-    const data = Api.fetchData();
-    const players = data.getLeaderBoardData();
-    this.setState({ players });
+    Api.fetchData().then(data => {
+      const players = data.getLeaderBoardData();
+      this.setState({ players });
+    });
   }
 
   public render() {

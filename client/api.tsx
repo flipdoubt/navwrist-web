@@ -1,10 +1,11 @@
 import * as _ from "lodash";
 import { Dictionary } from "lodash";
+import { string } from "prop-types";
 
 export default class Api {
   public static newId(): string {
     /**
-     * From https://stackoverflow.com/questions/13212521/typescript-static-classes.
+     * https://stackoverflow.com/questions/13212521/typescript-static-classes.
      */
     return (([1e7] as any) + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
       (
@@ -14,29 +15,10 @@ export default class Api {
     );
   }
 
-  /**
-   * TODO: Return a promise.
-   * TODO: Get from database.
-   */
-  public static fetchData(): Data {
-    return this.getSampleData();
-  }
-
-  public static getSampleData(success = true): Data {
+  public static async fetchData(): Promise<Data> {
     const data = new Data();
-    const player1 = Player.new("Franko");
-    const player2 = Player.new("Everyone Else");
-    data.players[player1.id] = player1;
-    data.players[player2.id] = player2;
-    // https://scotch.io/tutorials/javascript-promises-for-dummies
-    // const p = new Promise(function(resolve, reject) {
-    //   if(success){
-    //     resolve(data);
-    //     return;
-    //   }
-    //   reject(new Error("Bad boy."));
-    // });
-    // return p;
+    data.players = await fetch("players").then<Dictionary<Player>>(r => r.json());
+    data.completedGames = await fetch("CompletedGames").then<Dictionary<CompletedGame>>(r => r.json());
     return data;
   }
 
