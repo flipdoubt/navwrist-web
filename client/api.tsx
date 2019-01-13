@@ -15,8 +15,8 @@ export default class Api {
   }
 
   /**
-   * TODO: Get from database.
    * TODO: Return a promise.
+   * TODO: Get from database.
    */
   public static fetchData(): Data {
     return this.getSampleData();
@@ -45,6 +45,9 @@ export default class Api {
   }
 }
 
+/**
+ * Do not add instance methods.
+ */
 export class CompletedGame {
   private static _nullGame: CompletedGame;
   constructor(
@@ -57,10 +60,6 @@ export class CompletedGame {
     public endDate?: Date
   ) {}
 
-  public containsPlayer(id: string): Boolean {
-    return this.winner === id || this.loser === id;
-  }
-
   public static new(): CompletedGame {
     return new CompletedGame(Api.newId());
   }
@@ -70,6 +69,9 @@ export class CompletedGame {
   }
 }
 
+/**
+ * Do not add instance methods.
+ */
 export class Player {
   private static _nullPlayer: Player;
   constructor(public name: string = "", public id: string = "") {}
