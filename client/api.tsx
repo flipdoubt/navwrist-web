@@ -17,8 +17,10 @@ export default class Api {
 
   public static async fetchData(): Promise<Data> {
     const data = new Data();
-    data.players = await fetch("players").then<Dictionary<Player>>(r => r.json());
-    data.completedGames = await fetch("CompletedGames").then<Dictionary<CompletedGame>>(r => r.json());
+    const playersPromise = fetch("players").then<Dictionary<Player>>(r => r.json());
+    const gamesPromise = fetch("CompletedGames").then<Dictionary<CompletedGame>>(r => r.json());
+    data.players = await playersPromise;
+    data.completedGames = await gamesPromise;
     return data;
   }
 
@@ -161,6 +163,6 @@ export class Data {
       dictionary[game.winner].winCount += 1;
       dictionary[game.loser].lossCount += 1;
     });
-    return _.sortBy(dictionary, record => record.getWinningPercentage());
+    return _.orderBy(dictionary, record => record.getWinningPercentage(), ['desc']);
   }
 }
