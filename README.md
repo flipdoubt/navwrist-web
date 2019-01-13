@@ -27,8 +27,8 @@ Based on [aspnet-starter-kit-2.0](https://github.com/Luteceo/aspnet-starter-kit-
 
 ```shell
 $ git clone -o navwrist-web -b master --single-branch \
-      https://github.com/flipdoubt/navwrist-web MyApp
-$ cd MyApp
+      https://github.com/flipdoubt/navwrist-web navwrist-web
+$ cd navwrist-web
 ```
 
 **Step 2**. Install project dependencies listed in [`project.json`](server/project.json) and
