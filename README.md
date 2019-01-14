@@ -50,7 +50,13 @@ You can also run your app in a release (production) mode by running `node run --
 Hot Module Replacement (HMR) by running `node run --no-hmr`.
 
 ### TODO
-* Style with [Bulma](https://bulma.io/)
-* Javascript data model
-* Database
-* The slightest bit of functionality
+* ~~Style with [Bulma](https://bulma.io/)
+* ~~Javascript data model
+* Database via entity framework
+* Put player
+* Put completed game
+* ~~The slightest bit of functionality
+* Add player UI
+* Start game via drag-n-drop
+* Win game
+* Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)
