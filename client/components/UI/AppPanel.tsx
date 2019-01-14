@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Panel, Box, Heading } from "react-bulma-components";
+import { Panel } from "react-bulma-components";
 
 type Props = {
   title: string;
