@@ -1,6 +1,5 @@
 import * as _ from "lodash";
 import { Dictionary } from "lodash";
-import { string } from "prop-types";
 
 export default class Api {
   public static newId(): string {
@@ -26,6 +25,16 @@ export default class Api {
 
   public static getDictionaryValues<T>(input: Dictionary<T>): Array<T> {
     return _.values(input);
+  }
+
+  public static getLeaderBoardData(players: Array<Player>, games: Array<CompletedGame>): Array<LeaderBoardRecord> {
+    const dictionary: Dictionary<LeaderBoardRecord> = {};
+    _.forEach(players, p => (dictionary[p.id] = new LeaderBoardRecord(p)));
+    _.forEach(games, game => {
+      dictionary[game.winner].winCount += 1;
+      dictionary[game.loser].lossCount += 1;
+    });
+    return _.orderBy(dictionary, record => record.getWinningPercentage(), ['desc']);
   }
 }
 
@@ -154,15 +163,5 @@ export class Data {
   public getPlayerAtIndex(index: number = 0): Player {
     if (index >= this.getNumberOfPlayers()) return new Player();
     return _.values(this.players)[index];
-  }
-
-  public getLeaderBoardData(): Array<LeaderBoardRecord> {
-    const dictionary: Dictionary<LeaderBoardRecord> = {};
-    _.forEach(this.players, p => (dictionary[p.id] = new LeaderBoardRecord(p)));
-    _.forEach(this.completedGames, game => {
-      dictionary[game.winner].winCount += 1;
-      dictionary[game.loser].lossCount += 1;
-    });
-    return _.orderBy(dictionary, record => record.getWinningPercentage(), ['desc']);
   }
 }
