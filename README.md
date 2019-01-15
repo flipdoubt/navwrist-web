@@ -58,6 +58,6 @@ Hot Module Replacement (HMR) by running `node run --no-hmr`.
 * ~~The slightest bit of functionality~~
 * Add player UI
 * Start current game via drag-n-drop
-* Add points in current game
-* Win game
+* ~~Add points in current game~~
+* ~~Win game~~
 * Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)
