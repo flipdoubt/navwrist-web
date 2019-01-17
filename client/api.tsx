@@ -15,11 +15,13 @@ export default class Api {
   }
 
   public static async fetchData(): Promise<Data> {
+    const result = await Promise.all([
+      fetch("players").then<Dictionary<Player>>(r => r.json()),
+      fetch("CompletedGames").then<Dictionary<CompletedGame>>(r => r.json())
+    ]);
     const data = new Data();
-    const playersPromise = fetch("players").then<Dictionary<Player>>(r => r.json());
-    const gamesPromise = fetch("CompletedGames").then<Dictionary<CompletedGame>>(r => r.json());
-    data.players = await playersPromise;
-    data.completedGames = await gamesPromise;
+    data.players = result[0];
+    data.completedGames = result[1];
     return data;
   }
 
@@ -27,14 +29,19 @@ export default class Api {
     return _.values(input);
   }
 
-  public static getLeaderBoardData(players: Array<Player>, games: Array<CompletedGame>): Array<LeaderBoardRecord> {
+  public static getLeaderBoardData(
+    players: Array<Player>,
+    games: Array<CompletedGame>
+  ): Array<LeaderBoardRecord> {
     const dictionary: Dictionary<LeaderBoardRecord> = {};
     _.forEach(players, p => (dictionary[p.id] = new LeaderBoardRecord(p)));
     _.forEach(games, game => {
       dictionary[game.winner].winCount += 1;
       dictionary[game.loser].lossCount += 1;
     });
-    return _.orderBy(dictionary, record => record.getWinningPercentage(), ['desc']);
+    return _.orderBy(dictionary, record => record.getWinningPercentage(), [
+      "desc"
+    ]);
   }
 }
 
