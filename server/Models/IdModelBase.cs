@@ -3,7 +3,7 @@ namespace Server.Models
 {
   public abstract class IdModelBase
   {
-    public string Id { get; set; }
+    public System.Guid Id { get; set; }
   }
 
 }

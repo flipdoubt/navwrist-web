@@ -1,7 +1,7 @@
 import * as React from "react";
 import AppPanel from "../UI/AppPanel";
 import { Content, Level } from "react-bulma-components";
-import { CurrentGame, Player, CompletedGame } from "../../api";
+import { CurrentGame, Player, CompletedGame, LeaderBoardRecord } from "../../api";
 import ScoreBoardPlayer from "./ScoreBoardPlayer";
 
 const initialState = {
@@ -10,7 +10,8 @@ const initialState = {
 };
 type State = Readonly<typeof initialState>;
 type Props = {
-  currentGame: CurrentGame;
+  record1: LeaderBoardRecord;
+  record2: LeaderBoardRecord;
   gameCompleted?: (CompletedGame) => void;
 };
 export default class ScoreBoard extends React.Component<Props, State> {
@@ -21,13 +22,13 @@ export default class ScoreBoard extends React.Component<Props, State> {
     this.scoreChanged = this.scoreChanged.bind(this);
   }
 
-  componentDidMount() {
-    const { currentGame } = this.props;
-    this.setState({ currentGame });
+  public componentWillReceiveProps(props: Props) {
+    const currentGame = new CurrentGame(props.record1.player, props.record2.player);
+    this.setState({currentGame})
   }
 
   scoreChanged(player: Player, newScore: number){
-    if(player === Player.nullPlayer()) {
+    if (player === Player.nullPlayer()) {
       console.log("Score changed for nullPlayer");
       return;
     }
@@ -36,7 +37,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
 
     if (currentGame.playerOne.id === player.id){
       currentGame.playerOneScore = newScore;
-    } else if(currentGame.playerTwo.id === player.id) {
+    } else if (currentGame.playerTwo.id === player.id) {
       currentGame.playerTwoScore = newScore;
     } else {
       console.log(`Could not change score for player-id ${player.id}.`);
@@ -46,10 +47,10 @@ export default class ScoreBoard extends React.Component<Props, State> {
     this.setState({currentGame});
 
     const winner = currentGame.winnerIs();
-    if(winner !== Player.nullPlayer()) {
+    if (winner !== Player.nullPlayer()) {
       // TODO: Something dramatic.
       console.log(`And we have a winner: ${winner.name} with ${newScore}. Congratulations, Franko!`);
-      if(this.props.gameCompleted) {
+      if (this.props.gameCompleted) {
         this.props.gameCompleted(currentGame.getCompletedGame());
       }
       this.setState({winner});
@@ -63,9 +64,8 @@ export default class ScoreBoard extends React.Component<Props, State> {
     return (
       <AppPanel title="Scoreboard">
         <Content>
-          <p>Drag players here.</p>
           <p>
-            Show the score, buttons to increment, start date, and time elapsed.
+            Drag players here. Show the score, buttons to increment, start date, and time elapsed.
           </p>
         </Content>
         <Level>

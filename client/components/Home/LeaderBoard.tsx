@@ -33,9 +33,9 @@ export default class LeaderBoard extends React.Component<LeaderBoardProps, {}> {
                   <tr key={p.player.id}>
                     <td>{i + 1}</td>
                     <td>{p.player.name}</td>
-                    <td>{p.winCount}</td>
-                    <td>{p.lossCount}</td>
-                    <td>{p.getWinningPercentage()}</td>
+                    <td>{p.wins}</td>
+                    <td>{p.losses}</td>
+                    <td>{p.score}</td>
                   </tr>
                 );
               })}

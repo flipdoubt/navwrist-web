@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { Dictionary } from "lodash";
+import { Dictionary, cloneDeep } from "lodash";
 
 export default class Api {
   public static newId(): string {
@@ -29,17 +29,40 @@ export default class Api {
     return _.values(input);
   }
 
+  public static async fetchLeaderBoardData() : Promise<Array<LeaderBoardRecord>> {
+    return await fetch("LeaderBoard").then<Array<LeaderBoardRecord>>(result => result.json());
+  }
+
+  public static async postCompletedGame(game : CompletedGame) : Promise<boolean> {
+    return await Api.postJson("CompletedGame", game)
+      .then<boolean>(response => response.json());
+  }
+
+  public static postJson<TData>(url: string, data: TData) : Promise<Response> {
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      } });
+  }
+
+  public static async fetchLeaderBoardRecord(playerId: string) : Promise<LeaderBoardRecord> {
+    return await fetch(`LeaderBoard\\${playerId}`)
+      .then(response => response.ok ? response.json() : LeaderBoardRecord.nullRecord());
+  }
+
   public static getLeaderBoardData(
     players: Array<Player>,
     games: Array<CompletedGame>
   ): Array<LeaderBoardRecord> {
     const dictionary: Dictionary<LeaderBoardRecord> = {};
     _.forEach(players, p => (dictionary[p.id] = new LeaderBoardRecord(p)));
-    _.forEach(games, game => {
-      dictionary[game.winner].winCount += 1;
-      dictionary[game.loser].lossCount += 1;
+    _.forEach(games, g => {
+      dictionary[g.winner].wins += 1;
+      dictionary[g.loser].losses += 1;
     });
-    return _.orderBy(dictionary, record => record.getWinningPercentage(), [
+    return _.orderBy(dictionary, r => LeaderBoardRecord.getWinningPercentage(r), [
       "desc"
     ]);
   }
@@ -86,15 +109,30 @@ export class Player {
 }
 
 export class LeaderBoardRecord {
+  private static _nullRecord : LeaderBoardRecord;
+
   constructor(
     public player: Player,
-    public winCount: number = 0,
-    public lossCount: number = 0
+    public wins: number = 0,
+    public losses: number = 0,
+    public score: number = 0
   ) {}
 
-  public getWinningPercentage(): number {
-    const count = this.winCount + this.lossCount;
-    return count === 0 ? 0 : this.winCount / count;
+  public static getWinningPercentage(record : LeaderBoardRecord) : number {
+    const count = record.wins + record.losses;
+    return count === 0 ? 0 : record.wins / count;
+  }
+
+  public static find(data : Array<LeaderBoardRecord>, playerId : string) : LeaderBoardRecord {
+    return _.find(data, function(i) { return i.player.id === playerId}) || LeaderBoardRecord.nullRecord();
+  }
+
+  public static indexOfPlayerId(data : Array<LeaderBoardRecord>, playerId : string) : number {
+    return _.findIndex(data, record => record.player.id === playerId);
+  }
+  
+  public static nullRecord() : LeaderBoardRecord {
+    return LeaderBoardRecord._nullRecord = LeaderBoardRecord._nullRecord || new LeaderBoardRecord(Player.nullPlayer());
   }
 }
 

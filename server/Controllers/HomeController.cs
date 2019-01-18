@@ -16,51 +16,42 @@ namespace Server.Controllers
       return View();
     }
 
-    [HttpGet("Players")]
-    public async Task<Dictionary<string, Player>> GetPlayers()
+    [HttpGet("LeaderBoard")]
+    public async Task<LeaderBoardRecord[]> GetLeaderBoard()
     {
-      return await _GetSamplePlayersAsync();
+      return await Task.Run(() =>
+        LeaderBoardData.GetLeaderBoard(_GetSamplePlayers(), _GetSampleCompletedGames()));
     }
 
-    private async Task<Dictionary<string, Player>> _GetSamplePlayersAsync()
+    [HttpGet("LeaderBoard/{playerId}")]
+    public async Task<LeaderBoardRecord> GetLeaderBoardRecord(string playerId)
     {
-      await Task.Delay(4000);
-      return _GetSamplePlayersSync();
+      var guid = new System.Guid(playerId);
+      return await Task.Run(() => LeaderBoardData.ForPlayer(guid));
     }
 
-    private Dictionary<string, Player> _GetSamplePlayersSync(){
-        var dictionary = new Dictionary<string, Player>();
-        var player1 = new Player() { Id = "57bccba1-dc47-4d08-9cf9-bccfab5c7e72", Name = "Franko" };
-        dictionary.Add(player1.Id, player1);
-        var player2 = new Player() { Id = "a2150ecc-6f92-463c-b6d7-b263bc678dbc", Name = "Everyone Else" };
-        dictionary.Add(player2.Id, player2);
-        return dictionary;
+    [HttpPost("CompletedGame")]
+    public async Task<bool> PutCompletedGame([FromBody] CompletedGame game){
+      return await Task.Run(() =>
+        LeaderBoardData.UpdateLeaderBoard(game));
     }
 
-    private List<Player> _GetSamplePlayersList(){
-        return _GetSamplePlayersSync().Select(p => p.Value).ToList();
-    }
-
-    [HttpGet("CompletedGames")]
-    public async Task<Dictionary<string, CompletedGame>> GetCompletedGames()
+    private Player[] _GetSamplePlayers()
     {
-        return await _GetSampleCompletedGames(_GetSamplePlayersList());
+      return new []{
+        new Player() { Id = new System.Guid("57bccba1-dc47-4d08-9cf9-bccfab5c7e72"), Name = "Franko" },
+        new Player() { Id = new System.Guid("a2150ecc-6f92-463c-b6d7-b263bc678dbc"), Name = "Everyone Else" }
+      };
     }
 
-    public async Task<Dictionary<string, CompletedGame>> _GetSampleCompletedGames(List<Player> players)
+    private CompletedGame[] _GetSampleCompletedGames()
     {
-      var t = Task.Run(() =>
-      {
-        var game = new CompletedGame() { Id = "7c26bdcc-b355-4259-98bc-419553ec289e" };
-        game.Winner = players[0].Id;
-        game.WinnerScore = 21;
-        game.Loser = players[1].Id;
-        var dictionary = new Dictionary<string, CompletedGame>();
-        dictionary.Add(game.Id, game);
-        return dictionary;
-      });
-      await Task.Delay(2000);
-      return t.Result;
+      var players = _GetSamplePlayers();
+      var game = new CompletedGame() { Id = new System.Guid("7c26bdcc-b355-4259-98bc-419553ec289e") };
+      game.Winner = players[0].Id;
+      game.WinnerScore = 21;
+      game.Loser = players[1].Id;
+      return new []{game};
     }
 
     public IActionResult Error()
