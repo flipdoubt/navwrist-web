@@ -18,7 +18,6 @@ export default class Page extends React.Component<
   readonly state = initialState;
   constructor(props: any) {
     super(props);
-    this.gameCompleted = this.gameCompleted.bind(this);
   }
 
   gameCompleted(game: CompletedGame) : void {
@@ -42,31 +41,6 @@ export default class Page extends React.Component<
         if(i2 >= 0) leaderBoardData[i2] = result[1];
         this.setState({leaderBoardData});
       });
-
-      // this.setState(state => {
-      //   const {leaderBoardData} = state;
-      //   const winner = LeaderBoardRecord.find(state.leaderBoardData, game.winner);
-      //   const loser = LeaderBoardRecord.find(state.leaderBoardData, game.loser);
-      //   const wIndex = state.leaderBoardData.indexOf(winner);
-      //   const lIndex = state.leaderBoardData.indexOf(loser);
-
-
-      //   console.log(wIndex);
-      //   console.log(lIndex);
-
-      //   if(wIndex >= 0){
-      //     const wCopy = {...leaderBoardData[wIndex]};
-      //     wCopy.wins++;
-      //     leaderBoardData[wIndex] = wCopy;
-      //   }
-
-      //   if(lIndex >= 0){
-      //     const lCopy = {...leaderBoardData[lIndex]};
-      //     lCopy.losses++;
-      //     leaderBoardData[lIndex] = lCopy;
-      //   }
-      //   return {leaderBoardData};
-      // });
     });
   }
 
@@ -78,12 +52,10 @@ export default class Page extends React.Component<
 
   public render() {
     const {leaderBoardData} = this.state;
-    const record1 = leaderBoardData.length > 0 ? leaderBoardData[0] : LeaderBoardRecord.nullRecord();
-    const record2 = leaderBoardData.length > 1 ? leaderBoardData[1] : LeaderBoardRecord.nullRecord();
     return (
       <React.Fragment>
-        <Scoreboard record1={record1} record2={record2} gameCompleted={this.gameCompleted} />
-        <Leaderboard players={leaderBoardData} />
+        <Scoreboard gameCompleted={game => this.gameCompleted(game)} />
+        <Leaderboard records={leaderBoardData} />
       </React.Fragment>
     );
   }

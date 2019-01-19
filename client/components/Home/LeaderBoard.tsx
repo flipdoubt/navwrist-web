@@ -1,14 +1,16 @@
 import * as React from "react";
-import { Section, Table } from "react-bulma-components";
-import { LeaderBoardRecord } from "../../api";
+import { Table } from "react-bulma-components";
+import Api, { LeaderBoardRecord } from "../../api";
 import AppPanel from "../UI/AppPanel";
+import LeaderBoardRow from "./LeaderBoardRow";
 
 type LeaderBoardProps = {
-  players: Array<LeaderBoardRecord>;
+  records: Array<LeaderBoardRecord>;
 };
 
 export default class LeaderBoard extends React.Component<LeaderBoardProps, {}> {
   public render() {
+    const sorted = Api.sortLeaderBoardData(this.props.records);
     return (
       <AppPanel title="Leaderboard">
         <div className="table-container">
@@ -28,17 +30,9 @@ export default class LeaderBoard extends React.Component<LeaderBoardProps, {}> {
               </tr>
             </thead>
             <tbody>
-              {this.props.players.map((p, i) => {
-                return (
-                  <tr key={p.player.id}>
-                    <td>{i + 1}</td>
-                    <td>{p.player.name}</td>
-                    <td>{p.wins}</td>
-                    <td>{p.losses}</td>
-                    <td>{p.score}</td>
-                  </tr>
-                );
-              })}
+              {sorted.map((p, i) =>
+                <LeaderBoardRow key={p.player.id} record={p} rank={i + 1} />
+              )}
             </tbody>
           </Table>
         </div>

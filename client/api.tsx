@@ -29,42 +29,46 @@ export default class Api {
     return _.values(input);
   }
 
-  public static async fetchLeaderBoardData() : Promise<Array<LeaderBoardRecord>> {
-    return await fetch("LeaderBoard").then<Array<LeaderBoardRecord>>(result => result.json());
+  public static async fetchLeaderBoardData(): Promise<
+    Array<LeaderBoardRecord>
+  > {
+    return await fetch("LeaderBoard").then<Array<LeaderBoardRecord>>(result =>
+      result.json()
+    );
   }
 
-  public static async postCompletedGame(game : CompletedGame) : Promise<boolean> {
-    return await Api.postJson("CompletedGame", game)
-      .then<boolean>(response => response.json());
+  public static async postCompletedGame(game: CompletedGame): Promise<boolean> {
+    return await Api.postJson("CompletedGame", game).then<boolean>(response =>
+      response.ok
+    );
   }
 
-  public static postJson<TData>(url: string, data: TData) : Promise<Response> {
+  public static postJson<TData>(url: string, data: TData): Promise<Response> {
     return fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json'
-      } });
-  }
-
-  public static async fetchLeaderBoardRecord(playerId: string) : Promise<LeaderBoardRecord> {
-    return await fetch(`LeaderBoard\\${playerId}`)
-      .then(response => response.ok ? response.json() : LeaderBoardRecord.nullRecord());
-  }
-
-  public static getLeaderBoardData(
-    players: Array<Player>,
-    games: Array<CompletedGame>
-  ): Array<LeaderBoardRecord> {
-    const dictionary: Dictionary<LeaderBoardRecord> = {};
-    _.forEach(players, p => (dictionary[p.id] = new LeaderBoardRecord(p)));
-    _.forEach(games, g => {
-      dictionary[g.winner].wins += 1;
-      dictionary[g.loser].losses += 1;
+        "Content-Type": "application/json"
+      }
     });
-    return _.orderBy(dictionary, r => LeaderBoardRecord.getWinningPercentage(r), [
-      "desc"
-    ]);
+  }
+
+  public static async fetchLeaderBoardRecord(
+    playerId: string
+  ): Promise<LeaderBoardRecord> {
+    return await fetch(`LeaderBoard\\${playerId}`).then(response =>
+      response.ok ? response.json() : LeaderBoardRecord.nullRecord()
+    );
+  }
+
+  public static sortLeaderBoardData(
+    data: Array<LeaderBoardRecord>
+  ): Array<LeaderBoardRecord> {
+    return _.orderBy(data, r => r.score, ["desc"]);
+  }
+
+  public static getDraggingClass(isDragging: boolean): string {
+    return isDragging ? "has-background-warning" : "";
   }
 }
 
@@ -106,10 +110,14 @@ export class Player {
   public static nullPlayer(): Player {
     return (this._nullPlayer = this._nullPlayer || new Player());
   }
+
+  public static isNull(player: Player): boolean {
+    return this.nullPlayer().id === player.id;
+  }
 }
 
 export class LeaderBoardRecord {
-  private static _nullRecord : LeaderBoardRecord;
+  private static _nullRecord: LeaderBoardRecord;
 
   constructor(
     public player: Player,
@@ -118,21 +126,37 @@ export class LeaderBoardRecord {
     public score: number = 0
   ) {}
 
-  public static getWinningPercentage(record : LeaderBoardRecord) : number {
+  public static getDragName(): string {
+    return "leaderBoardRecord";
+  }
+
+  public static getWinningPercentage(record: LeaderBoardRecord): number {
     const count = record.wins + record.losses;
     return count === 0 ? 0 : record.wins / count;
   }
 
-  public static find(data : Array<LeaderBoardRecord>, playerId : string) : LeaderBoardRecord {
-    return _.find(data, function(i) { return i.player.id === playerId}) || LeaderBoardRecord.nullRecord();
+  public static find(
+    data: Array<LeaderBoardRecord>,
+    playerId: string
+  ): LeaderBoardRecord {
+    return (
+      _.find(data, function(i) {
+        return i.player.id === playerId;
+      }) || LeaderBoardRecord.nullRecord()
+    );
   }
 
-  public static indexOfPlayerId(data : Array<LeaderBoardRecord>, playerId : string) : number {
+  public static indexOfPlayerId(
+    data: Array<LeaderBoardRecord>,
+    playerId: string
+  ): number {
     return _.findIndex(data, record => record.player.id === playerId);
   }
-  
-  public static nullRecord() : LeaderBoardRecord {
-    return LeaderBoardRecord._nullRecord = LeaderBoardRecord._nullRecord || new LeaderBoardRecord(Player.nullPlayer());
+
+  public static nullRecord(): LeaderBoardRecord {
+    return (LeaderBoardRecord._nullRecord =
+      LeaderBoardRecord._nullRecord ||
+      new LeaderBoardRecord(Player.nullPlayer()));
   }
 }
 
@@ -163,7 +187,7 @@ export class CurrentGame {
 
   public getCompletedGame(): CompletedGame {
     const winner = this.winnerIs();
-    if (winner === Player.nullPlayer()) return CompletedGame.nullGame();
+    if (Player.isNull(winner)) return CompletedGame.nullGame();
 
     const game = CompletedGame.new();
     game.winner = winner.id;

@@ -10,8 +10,6 @@ const initialState = {
 };
 type State = Readonly<typeof initialState>;
 type Props = {
-  record1: LeaderBoardRecord;
-  record2: LeaderBoardRecord;
   gameCompleted?: (CompletedGame) => void;
 };
 export default class ScoreBoard extends React.Component<Props, State> {
@@ -19,17 +17,44 @@ export default class ScoreBoard extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    this.scoreChanged = this.scoreChanged.bind(this);
+    this.setStateNewGame = this.setStateNewGame.bind(this);
   }
 
-  public componentWillReceiveProps(props: Props) {
-    const currentGame = new CurrentGame(props.record1.player, props.record2.player);
-    this.setState({currentGame})
+  setStateNewGame(currentGame: CurrentGame) {
+    currentGame.playerOneScore = 0;
+    currentGame.playerTwoScore = 0;
+    this.setState({currentGame, winner: Player.nullPlayer()});
+  }
+
+  onNewPlayerOne(newPlayer: Player): boolean {
+    const {currentGame} = this.state;
+    currentGame.playerOne = newPlayer;
+    if (this.state.winner === currentGame.playerTwo) currentGame.playerTwo = Player.nullPlayer();
+    this.setStateNewGame(currentGame);
+    return true;
+  }
+
+  onNewPlayerTwo(newPlayer: Player): boolean {
+    const {currentGame} = this.state;
+    currentGame.playerTwo = newPlayer;
+    if (this.state.winner === currentGame.playerOne) currentGame.playerOne = Player.nullPlayer();
+    this.setStateNewGame(currentGame);
+    return true;
   }
 
   scoreChanged(player: Player, newScore: number){
-    if (player === Player.nullPlayer()) {
+    if (Player.isNull(player)) {
       console.log("Score changed for nullPlayer");
+      return;
+    }
+
+    if (Player.isNull(this.state.currentGame.playerOne)) {
+      console.log("Cannot play without Player One.");
+      return;
+    }
+
+    if (Player.isNull(this.state.currentGame.playerTwo)) {
+      console.log("Cannot play without Player Two.");
       return;
     }
 
@@ -44,23 +69,23 @@ export default class ScoreBoard extends React.Component<Props, State> {
       return;
     }
 
-    this.setState({currentGame});
-
     const winner = currentGame.winnerIs();
-    if (winner !== Player.nullPlayer()) {
-      // TODO: Something dramatic.
-      console.log(`And we have a winner: ${winner.name} with ${newScore}. Congratulations, Franko!`);
-      if (this.props.gameCompleted) {
-        this.props.gameCompleted(currentGame.getCompletedGame());
-      }
-      this.setState({winner});
+    if (Player.isNull(winner)) {
+      this.setState({currentGame});
+      return;
     }
+
+    // TODO: Something dramatic.
+    console.log(`And we have a winner: ${winner.name} with ${newScore}.`);
+    this.setState({currentGame, winner});
+    if (!this.props.gameCompleted) return;
+    this.props.gameCompleted(currentGame.getCompletedGame());
   }
 
   public render() {
     const {currentGame, winner} = this.state;
     const {playerOne, playerTwo} = currentGame;
-    const isFinal = winner !== Player.nullPlayer();
+    const isFinal = !Player.isNull(winner);
     return (
       <AppPanel title="Scoreboard">
         <Content>
@@ -73,10 +98,11 @@ export default class ScoreBoard extends React.Component<Props, State> {
             <Level.Item>
               <ScoreBoardPlayer
                 player={playerOne}
-                color="has-background-primary"
-                scoreChanged={newScore => this.scoreChanged(playerOne, newScore)}
-                isWinner={winner.id === playerOne.id}
+                color="has-text-black"
+                isWinner={isFinal && (winner.id === playerOne.id)}
                 isFinal={isFinal}
+                newPlayerWillEnterGame={newPlayer => this.onNewPlayerOne(newPlayer)}
+                scoreChanged={newScore => this.scoreChanged(playerOne, newScore)}
               />
             </Level.Item>
             <Level.Item>
@@ -85,10 +111,11 @@ export default class ScoreBoard extends React.Component<Props, State> {
             <Level.Item>
               <ScoreBoardPlayer
                 player={playerTwo}
-                color="has-background-info"
-                scoreChanged={newScore => this.scoreChanged(playerTwo, newScore)}
-                isWinner={winner.id === playerTwo.id}
+                color="has-text-danger"
+                isWinner={isFinal && (winner.id === playerTwo.id)}
                 isFinal={isFinal}
+                newPlayerWillEnterGame={newPlayer => this.onNewPlayerTwo(newPlayer)}
+                scoreChanged={newScore => this.scoreChanged(playerTwo, newScore)}
               />
             </Level.Item>
           </Level.Side>

@@ -52,13 +52,14 @@ Hot Module Replacement (HMR) by running `node run --no-hmr`.
 ### TODO
 * ~~Style with [Bulma](https://bulma.io/)~~
 * ~~Javascript data model~~
-* Database via entity framework
-* Put player
 * ~~Put completed game~~
 * ~~The slightest bit of functionality~~
-* Add player UI
-* Start current game via drag-n-drop
-* Track current serve
+* ~~Start current game via drag-n-drop~~
 * ~~Add points in current game~~
 * ~~Win game~~
+* Rematch
+* Track current serve
+* Add player UI
+* Database via entity framework
+* Put player
 * Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)
