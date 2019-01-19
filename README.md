@@ -61,4 +61,7 @@ Hot Module Replacement (HMR) by running `node run --no-hmr`.
 * Track current serve
 * ~~Add points in current game~~
 * Win game
+* ~~Add points in current game~~
+* ~~Win game~~
+>>>>>>> c90a3ef8476b2724ebc99ab23ac08d0c5586a4d5
 * Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)
