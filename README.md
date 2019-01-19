@@ -7,11 +7,11 @@ Based on [aspnet-starter-kit-2.0](https://github.com/Luteceo/aspnet-starter-kit-
 
 ## Features
 
-&nbsp; &nbsp; ✓ Component-based front-end development via [Webpack](https://webpack.github.io/) and [React](https://facebook.github.io/react) (see [`webpack.config.js`](webpack.config.js))  
-&nbsp; &nbsp; ✓ Static type checking with [TypeScript](https://www.typescriptlang.org)  
-&nbsp; &nbsp; ✓ Universal cross-stack routing and navigation [`history`](https://github.com/ReactJSTraining/history) (see [`client/routes.tsx`](client/routes.tsx))  
-&nbsp; &nbsp; ✓ Hot Module Replacement ([HMR](https://webpack.github.io/docs/hot-module-replacement.html)) /w [React Hot Loader](http://gaearon.github.io/react-hot-loader/)  
-&nbsp; &nbsp; ✓ Lightweight build automation with plain JavaScript (see [`run.js`](run.js))  
+&nbsp; &nbsp; ✓ Component-based front-end development via [Webpack](https://webpack.github.io/) and [React](https://facebook.github.io/react) (see [`webpack.config.js`](webpack.config.js))
+&nbsp; &nbsp; ✓ Static type checking with [TypeScript](https://www.typescriptlang.org)
+&nbsp; &nbsp; ✓ Universal cross-stack routing and navigation [`history`](https://github.com/ReactJSTraining/history) (see [`client/routes.tsx`](client/routes.tsx))
+&nbsp; &nbsp; ✓ Hot Module Replacement ([HMR](https://webpack.github.io/docs/hot-module-replacement.html)) /w [React Hot Loader](http://gaearon.github.io/react-hot-loader/)
+&nbsp; &nbsp; ✓ Lightweight build automation with plain JavaScript (see [`run.js`](run.js))
 &nbsp; &nbsp; ✓ Cross-device testing with [Browsersync](https://browsersync.io/)
 
 ## Prerequisites
@@ -54,10 +54,11 @@ Hot Module Replacement (HMR) by running `node run --no-hmr`.
 * ~~Javascript data model~~
 * Database via entity framework
 * Put player
-* Put completed game
+* ~~Put completed game~~
 * ~~The slightest bit of functionality~~
 * Add player UI
 * Start current game via drag-n-drop
-* Add points in current game
+* Track current serve
+* ~~Add points in current game~~
 * Win game
 * Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)
