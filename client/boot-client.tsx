@@ -3,7 +3,6 @@ import * as ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
 import { Router } from "react-router";
 import { createBrowserHistory } from "history";
-import "react-bulma-components/dist/react-bulma-components.min.css";
 import "./css/site.css";
 import { Layout } from "./components/UI/Layout";
 import * as RoutesModule from "./routes";

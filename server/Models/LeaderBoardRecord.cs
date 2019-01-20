@@ -43,10 +43,11 @@ namespace Server.Models
     internal static LeaderBoardRecord ForPlayer(System.Guid playerId)
     {
       var record = _data?.FirstOrDefault(r => r.Player.Id == playerId) ?? new LeaderBoardRecord();
-      if (record.Player.Name == "Franko")
-      {
-        Task.Delay(3000).Wait(); // Pause for Franko.
-      }
+      // Tests concurrency by making one query longer than the others.
+      // if (record.Player.Name == "Franko")
+      // {
+      //   Task.Delay(3000).Wait(); // Pause for Franko.
+      // }
       return record;
     }
 

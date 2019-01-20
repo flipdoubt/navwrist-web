@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Card, Content } from "react-bulma-components";
 import styled from "styled-components";
 import Api, { Player, LeaderBoardRecord } from "../../api";
 
@@ -12,18 +11,15 @@ const Score = styled.div`
 
 type Props = {
   player: Player;
-  label?: string;
-  color: string;
   isServing?: boolean;
-  isWinner?: boolean;
   isFinal?: boolean;
+  score: number;
   newPlayerWillEnterGame?: (newPlayer: Player) => boolean;
   scoreChanged?: (newScore: number) => void;
 };
 
 const initialState = {
-  score: 0,
-  isDragging: false,
+  isDragging: false
 };
 type State = Readonly<typeof initialState>;
 
@@ -35,55 +31,47 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
     this.incrementScore = this.incrementScore.bind(this);
   }
 
-  componentWillReceiveProps(props) {
-    if(Player.isNull(props.player)) {
-      this.setState({score: 0});
-    }
-  }
-
   incrementScore(changeAmount: number) {
     if (this.props.isFinal || this.props.player === Player.nullPlayer()) return;
-    const newScore = this.state.score + changeAmount;
-    this.setState({ score: newScore });
+    const newScore = this.props.score + changeAmount;
     if (this.props.scoreChanged) this.props.scoreChanged(newScore);
   }
 
   render() {
-    const color = this.props.isWinner ? "has-background-success" : "";
     const player = this.props.player;
     const name = player.name || "Add Player";
+    const draggingClass = Api.getDraggingClass(this.state.isDragging);
     return (
-      <Card
-        onDragOverCapture={e=> this.onDragOver(e)}
+      <div className="card"
+        onDragOverCapture={e => this.onDragOver(e)}
         onDragLeaveCapture={e => this.onDragLeave(e)}
         onDrop={e => this.onDrop(e)}
       >
-        <Card.Header>
-          <Card.Header.Title className={Api.getDraggingClass(this.state.isDragging)}>{name}</Card.Header.Title>
-        </Card.Header>
+        <div className="card-header">
+          <div className="card-header-title {draggingClass}">
+            {name}
+          </div>
+        </div>
 
-        <Score className={color + " has-text-centered"}>
-          {this.state.score} {this.props.isServing ? "o" : " "}
+        <Score className="has-text-centered">
+          {this.props.score} {this.props.isServing ? "o" : " "}
         </Score>
-        <Card.Footer>
-          <Card.Footer.Item
-            renderAs="a"
+        <div className="card-footer">
+          <a className="card-footer-item"
             href="#addPoint"
             title="Add Point"
             onClick={() => this.incrementScore(1)}
-          >
-            +
-          </Card.Footer.Item>
-          <Card.Footer.Item
-            renderAs="a"
+          >+</a>
+          <a
+            className="card-footer-item"
             href="#removePoint"
             title="Remove Point"
             onClick={() => this.incrementScore(-1)}
           >
             -
-          </Card.Footer.Item>
-        </Card.Footer>
-      </Card>
+          </a>
+        </div>
+      </div>
     );
   }
   onDragLeave(e: React.DragEvent<Element>): any {
@@ -104,9 +92,12 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
         LeaderBoardRecord.prototype
       );
 
-      if(this.props.newPlayerWillEnterGame && this.props.newPlayerWillEnterGame(record.player)){
-        console.log(`ScoreBoardPlayer: Added ${record.player.id}.`)
-        this.setState({ isDragging: false, score: 0 });
+      if (
+        this.props.newPlayerWillEnterGame &&
+        this.props.newPlayerWillEnterGame(record.player)
+      ) {
+        console.log(`ScoreBoardPlayer: Added ${record.player.id}.`);
+        this.setState({ isDragging: false });
         return;
       }
       console.log("onDrop: No handler for newPlayerWillEnterGame.");

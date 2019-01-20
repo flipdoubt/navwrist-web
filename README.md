@@ -1,5 +1,4 @@
-NAVWRIST-WEB
-==================
+# NAVWRIST-WEB
 
 A tool to navigate the world of office ping-pong competition.
 
@@ -16,10 +15,10 @@ Based on [aspnet-starter-kit-2.0](https://github.com/Luteceo/aspnet-starter-kit-
 
 ## Prerequisites
 
-* OS X, Windows or Linux
-* [Node.js](https://nodejs.org) v6 or newer
-* [.NET Core](https://www.microsoft.com/net/core) and [.NET Core SDK](https://www.microsoft.com/net/core)
-* [Visual Studio Code](https://code.visualstudio.com/) or your prefered IDE.
+- OS X, Windows or Linux
+- [Node.js](https://nodejs.org) v6 or newer
+- [.NET Core](https://www.microsoft.com/net/core) and [.NET Core SDK](https://www.microsoft.com/net/core)
+- [Visual Studio Code](https://code.visualstudio.com/) or your prefered IDE.
 
 ### Getting Started
 
@@ -50,16 +49,17 @@ You can also run your app in a release (production) mode by running `node run --
 Hot Module Replacement (HMR) by running `node run --no-hmr`.
 
 ### TODO
-* ~~Style with [Bulma](https://bulma.io/)~~
-* ~~Javascript data model~~
-* ~~Put completed game~~
-* ~~The slightest bit of functionality~~
-* ~~Start current game via drag-n-drop~~
-* ~~Add points in current game~~
-* ~~Win game~~
-* Rematch
-* Track current serve
-* Add player UI
-* Database via entity framework
-* Put player
-* Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)
+
+- ~~Style with [Bulma](https://bulma.io/)~~
+- ~~Javascript data model~~
+- ~~Put completed game~~
+- ~~The slightest bit of functionality~~
+- ~~Start current game via drag-n-drop~~
+- ~~Add points in current game~~
+- ~~Win game~~
+- ~~Rematch~~
+- Track current serve
+- Add player UI
+- Database via entity framework
+- Put player
+- Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)

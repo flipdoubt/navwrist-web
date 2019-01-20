@@ -47,12 +47,7 @@ namespace Server.Controllers
 
     private CompletedGame[] _GetSampleCompletedGames()
     {
-      var players = _GetSamplePlayers();
-      var game = new CompletedGame() { Id = new System.Guid("7c26bdcc-b355-4259-98bc-419553ec289e") };
-      game.Winner = players[0].Id;
-      game.WinnerScore = 21;
-      game.Loser = players[1].Id;
-      return new []{game};
+      return new CompletedGame[0];
     }
 
     public IActionResult Error()

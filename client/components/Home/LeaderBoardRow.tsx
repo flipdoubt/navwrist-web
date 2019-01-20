@@ -23,7 +23,7 @@ export default class LeaderBoadRow extends React.Component<Props, State>{
         onDragStart={(e: React.DragEvent<HTMLTableRowElement>) => this.onDragStart(e, record)}
         onDragEnd={(e: React.DragEvent<HTMLTableRowElement>) => this.onDragEnd(e, record)}
         >
-        <td>{rank}</td>
+        <td className="has-text-weight-bold">{rank}</td>
         <td>{record.player.name}</td>
         <td>{record.wins}</td>
         <td>{record.losses}</td>

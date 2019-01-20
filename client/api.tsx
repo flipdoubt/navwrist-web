@@ -43,6 +43,13 @@ export default class Api {
     );
   }
 
+  public static updateFetchedLeaderBoardData(fetchedData: Array<LeaderBoardRecord>, toUpdate: Array<LeaderBoardRecord>) : void {
+    _.each(fetchedData, fetched => {
+      const indexToUpdate = _.findIndex(toUpdate, record => record.player.id === fetched.player.id);
+      if (indexToUpdate >= 0) toUpdate[indexToUpdate] = fetched;
+    })
+  }
+
   public static postJson<TData>(url: string, data: TData): Promise<Response> {
     return fetch(url, {
       method: "POST",
@@ -111,8 +118,8 @@ export class Player {
     return (this._nullPlayer = this._nullPlayer || new Player());
   }
 
-  public static isNull(player: Player): boolean {
-    return this.nullPlayer().id === player.id;
+  public static isNull(player?: Player): boolean {
+    return !player || this.nullPlayer().id === player.id;
   }
 }
 
@@ -144,13 +151,6 @@ export class LeaderBoardRecord {
         return i.player.id === playerId;
       }) || LeaderBoardRecord.nullRecord()
     );
-  }
-
-  public static indexOfPlayerId(
-    data: Array<LeaderBoardRecord>,
-    playerId: string
-  ): number {
-    return _.findIndex(data, record => record.player.id === playerId);
   }
 
   public static nullRecord(): LeaderBoardRecord {

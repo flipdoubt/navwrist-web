@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Panel } from "react-bulma-components";
 
 type Props = {
   title: string;
@@ -8,12 +7,12 @@ type Props = {
 export default class AppPanel extends React.Component<Props> {
   public render() {
     return (
-      <Panel>
-        <Panel.Header>{this.props.title}</Panel.Header>
-        <Panel.Block>
+      <div className="panel">
+        <div className="panel-heading">{this.props.title}</div>
+        <div className="panel-block">
           <div className="column">{this.props.children}</div>
-        </Panel.Block>
-      </Panel>
+        </div>
+      </div>
     );
   }
 }
