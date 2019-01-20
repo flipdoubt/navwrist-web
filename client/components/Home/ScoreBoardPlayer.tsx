@@ -40,7 +40,7 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
   render() {
     const player = this.props.player;
     const name = player.name || "Add Player";
-    const draggingClass = Api.getDraggingClass(this.state.isDragging);
+    const draggingClass = "card-header-title title is-3 " + Api.getDraggingClass(this.state.isDragging);
     return (
       <div className="card"
         onDragOverCapture={e => this.onDragOver(e)}
@@ -48,7 +48,7 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
         onDrop={e => this.onDrop(e)}
       >
         <div className="card-header">
-          <div className="card-header-title {draggingClass}">
+          <div className={draggingClass}>
             {name}
           </div>
         </div>

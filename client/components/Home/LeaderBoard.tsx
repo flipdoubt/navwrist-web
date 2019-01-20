@@ -13,7 +13,7 @@ export default class LeaderBoard extends React.Component<LeaderBoardProps, {}> {
     return (
       <AppPanel title="Leaderboard">
         <div className="table-container">
-          <table className="table is-striped is-fullwidth">
+          <table className="table is-fullwidth">
             <thead>
               <tr>
                 <th>Rank</th>

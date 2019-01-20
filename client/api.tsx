@@ -38,16 +38,22 @@ export default class Api {
   }
 
   public static async postCompletedGame(game: CompletedGame): Promise<boolean> {
-    return await Api.postJson("CompletedGame", game).then<boolean>(response =>
-      response.ok
+    return await Api.postJson("CompletedGame", game).then<boolean>(
+      response => response.ok
     );
   }
 
-  public static updateFetchedLeaderBoardData(fetchedData: Array<LeaderBoardRecord>, toUpdate: Array<LeaderBoardRecord>) : void {
+  public static updateFetchedLeaderBoardData(
+    fetchedData: Array<LeaderBoardRecord>,
+    toUpdate: Array<LeaderBoardRecord>
+  ): void {
     _.each(fetchedData, fetched => {
-      const indexToUpdate = _.findIndex(toUpdate, record => record.player.id === fetched.player.id);
+      const indexToUpdate = _.findIndex(
+        toUpdate,
+        record => record.player.id === fetched.player.id
+      );
       if (indexToUpdate >= 0) toUpdate[indexToUpdate] = fetched;
-    })
+    });
   }
 
   public static postJson<TData>(url: string, data: TData): Promise<Response> {
@@ -75,7 +81,7 @@ export default class Api {
   }
 
   public static getDraggingClass(isDragging: boolean): string {
-    return isDragging ? "has-background-warning" : "";
+    return isDragging ? "has-background-primary" : "";
   }
 }
 
@@ -168,6 +174,7 @@ export class CurrentGame {
     public playerOne: Player,
     public playerTwo: Player,
     public winAt = 21,
+    public winByMargin = 2,
     public startDate?: Date
   ) {
     this.startDate = startDate || new Date(Date.now());
@@ -177,12 +184,21 @@ export class CurrentGame {
     if (this.playerOneScore < this.winAt && this.playerTwoScore < this.winAt)
       return Player.nullPlayer();
     let difference = this.playerOneScore - this.playerTwoScore;
-    if (Math.abs(difference) >= 2) {
+    if (Math.abs(difference) >= this.winByMargin) {
       return this.playerOneScore > this.playerTwoScore
         ? this.playerOne
         : this.playerTwo;
     }
     return Player.nullPlayer();
+  }
+
+  public getGameInfo(): string {
+    const winner = this.winnerIs();
+    if (Player.isNull(winner)) return "";
+    const game = this.getCompletedGame();
+    return `<span class="has-text-primary">${winner.name}</span> wins ${
+      game.winnerScore
+    } to ${game.loserScore}.`;
   }
 
   public getCompletedGame(): CompletedGame {

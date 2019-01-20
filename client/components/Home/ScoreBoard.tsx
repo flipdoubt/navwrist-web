@@ -84,8 +84,6 @@ export default class ScoreBoard extends React.Component<Props, State> {
       return;
     }
 
-    // TODO: Something dramatic.
-    console.log(`And we have a winner: ${winner.name} with ${newScore}.`);
     this.setState({ currentGame, winner });
     if (!this.props.gameCompleted) return;
     this.props.gameCompleted(currentGame.getCompletedGame());
@@ -95,16 +93,21 @@ export default class ScoreBoard extends React.Component<Props, State> {
     const { currentGame, winner } = this.state;
     const { playerOne, playerTwo } = currentGame;
     const isFinal = !Player.isNull(winner);
+    const game = currentGame.getCompletedGame();
+    const loserName = isFinal ? (winner === playerOne ? playerTwo.name : playerOne.name) : ""
     return (
       <AppPanel title="Scoreboard">
         <WinnerModal
           show={isFinal}
+          winner={winner.name}
+          loser={loserName}
+          completedGame={game}
           newGame={() => this.onNewGame()}
           rematch={() => this.onRematch()}
         />
         <div className="content">
           <p>
-            Drag players here. Show the score, buttons to increment, start date,
+            Drag players here. Show the score, buttons to increment, ranking,
             and time elapsed.
           </p>
         </div>

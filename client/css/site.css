@@ -6,3 +6,7 @@ body {
 #app {
   height: 100vh;
 }
+
+#app > section.section {
+  padding: 1.5rem;
+}
