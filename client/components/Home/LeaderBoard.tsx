@@ -53,7 +53,7 @@ export default class LeaderBoard extends React.Component<Props, State> {
               className="button is-outlined"
               onClick={() => this.onAddPlayer()}
             >
-              Add Player
+              + Add Player
             </button>
           </div>
         </div>

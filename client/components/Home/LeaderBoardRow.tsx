@@ -27,7 +27,7 @@ export default class LeaderBoadRow extends React.Component<Props, State>{
         <td>{record.player.name}</td>
         <td>{record.wins}</td>
         <td>{record.losses}</td>
-        <td>{record.score.toFixed(3)}</td>
+        <td>{LeaderBoardRecord.scoreAsString(record)}</td>
       </tr>);
   }
   onDragEnd(e: React.DragEvent<HTMLTableRowElement>, record: LeaderBoardRecord): void {

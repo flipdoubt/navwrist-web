@@ -10,12 +10,19 @@ type Props = {
   handleChange?: (string) => void;
 };
 
+// https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 const Input = (props: Props) => {
   const changeHandler = function(source: React.ChangeEvent<HTMLInputElement>) {
-    const { value } = source.target;
-    if (props.handleChange) {
-      props.handleChange(value);
+    if (!props.handleChange) {
+      console.log(
+        `Add handleChange handler to ${
+          props.name
+        } Input to do something with the updated value.`
+      );
+      return;
     }
+
+    props.handleChange(source.target.value);
   };
   return (
     <div className="field">

@@ -155,21 +155,20 @@ export class LeaderBoardRecord {
     return count === 0 ? 0 : record.wins / count;
   }
 
-  public static find(
-    data: Array<LeaderBoardRecord>,
-    playerId: string
-  ): LeaderBoardRecord {
-    return (
-      _.find(data, function(i) {
-        return i.player.id === playerId;
-      }) || LeaderBoardRecord.nullRecord()
-    );
+  public static scoreAsString(record: LeaderBoardRecord): string {
+    return record.score.toFixed(3);
   }
 
   public static nullRecord(): LeaderBoardRecord {
     return (LeaderBoardRecord._nullRecord =
       LeaderBoardRecord._nullRecord ||
       new LeaderBoardRecord(Player.nullPlayer()));
+  }
+
+  public static isNull(record: LeaderBoardRecord): boolean {
+    return (
+      !record || record === this._nullRecord || Player.isNull(record.player)
+    );
   }
 }
 
@@ -182,6 +181,7 @@ export class CurrentGame {
     public playerTwo: Player,
     public winAt = 21,
     public winByMargin = 2,
+    public switchServeEvery = 5,
     public startDate?: Date
   ) {
     this.startDate = startDate || new Date(Date.now());
@@ -199,13 +199,22 @@ export class CurrentGame {
     return Player.nullPlayer();
   }
 
-  public getGameInfo(): string {
-    const winner = this.winnerIs();
-    if (Player.isNull(winner)) return "";
-    const game = this.getCompletedGame();
-    return `<span class="has-text-primary">${winner.name}</span> wins ${
-      game.winnerScore
-    } to ${game.loserScore}.`;
+  public getPlayerHasServe(): number {
+    const total = this.playerOneScore + this.playerTwoScore;
+    const divFloor = Math.floor(total / this.switchServeEvery);
+    const oddOrEven = divFloor % 2; // 0 is odd, 1 is even.
+    const playerNumber = oddOrEven + 1;
+    const advantageThreshold = this.winAt - 1;
+
+    if (
+      this.playerOneScore < advantageThreshold &&
+      this.playerTwoScore < advantageThreshold
+    ) {
+      return playerNumber;
+    }
+
+    if (this.playerOneScore === this.playerTwoScore) return playerNumber;
+    return this.playerOneScore > this.playerTwoScore ? 2 : 1;
   }
 
   public getCompletedGame(): CompletedGame {

@@ -97,19 +97,20 @@ export default class ScoreBoard extends React.Component<Props, State> {
     const { currentGame, winner } = this.state;
     const { playerOne, playerTwo } = currentGame;
     const isFinal = !Player.isNull(winner);
-    const game = currentGame.getCompletedGame();
-    const loserName = isFinal ? (winner === playerOne ? playerTwo.name : playerOne.name) : ""
     return (
       <AppPanel title="Scoreboard">
-        <WinnerModal
-          show={isFinal}
-          winner={winner.name}
-          loser={loserName}
-          completedGame={game}
-          newGame={() => this.onNewGame()}
-          rematch={() => this.onRematch()}
-          close={() => this.onCloseModal()}
-        />
+        {!isFinal ? null : (
+            <WinnerModal
+            show={true}
+            winner={winner.name}
+            loser={(winner === playerOne ? playerTwo.name : playerOne.name)}
+            completedGame={currentGame.getCompletedGame()}
+            newGame={() => this.onNewGame()}
+            rematch={() => this.onRematch()}
+            close={() => this.onCloseModal()}
+          />
+        )}
+
         <div className="content">
           <p>
             Drag players here. Show the score, buttons to increment, ranking,
@@ -122,6 +123,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
               player={playerOne}
               score={currentGame.playerOneScore}
               isFinal={isFinal}
+              isServing={currentGame.getPlayerHasServe() === 1}
               newPlayerWillEnterGame={newPlayer =>
                 this.onNewPlayerOne(newPlayer)
               }
@@ -136,6 +138,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
               player={playerTwo}
               score={currentGame.playerTwoScore}
               isFinal={isFinal}
+              isServing={currentGame.getPlayerHasServe() === 2}
               newPlayerWillEnterGame={newPlayer =>
                 this.onNewPlayerTwo(newPlayer)
               }

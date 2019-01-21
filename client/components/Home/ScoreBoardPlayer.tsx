@@ -3,10 +3,12 @@ import styled from "styled-components";
 import Api, { Player, LeaderBoardRecord } from "../../api";
 
 const Score = styled.div`
-  font-size: 6rem;
   width: 40vw;
   min-width: 250px;
   max-width: 25rem;
+`;
+const ScoreValue = styled.span`
+  font-size: 6.5rem;
 `;
 
 type Props = {
@@ -32,38 +34,47 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
   }
 
   incrementScore(changeAmount: number) {
-    if (this.props.isFinal || this.props.player === Player.nullPlayer()) return;
+    if (this.props.isFinal || Player.isNull(this.props.player)) return;
     const newScore = this.props.score + changeAmount;
     if (this.props.scoreChanged) this.props.scoreChanged(newScore);
   }
 
   render() {
-    const player = this.props.player;
-    const name = player.name || "Add Player";
-    const draggingClass = "card-header-title title is-3 " + Api.getDraggingClass(this.state.isDragging);
+    const name = Player.isNull(this.props.player)
+      ? "Add Player"
+      : this.props.player.name;
+    const draggingClass =
+      "card-header-title title is-3 has-text-weight-light " +
+      Api.getDraggingClass(this.state.isDragging);
     return (
-      <div className="card"
+      <div
+        className="card"
         onDragOverCapture={e => this.onDragOver(e)}
         onDragLeaveCapture={e => this.onDragLeave(e)}
         onDrop={e => this.onDrop(e)}
       >
         <div className="card-header">
-          <div className={draggingClass}>
-            {name}
-          </div>
+          <div className={draggingClass}>{name}</div>
         </div>
 
-        <Score className="has-text-centered">
-          {this.props.score} {this.props.isServing ? "o" : " "}
+        <Score className="has-text-centered has-text-weight-light">
+          <ScoreValue>{this.props.score}</ScoreValue>
+          {!this.props.isServing ? null : (<span className="tag is-primary">serving</span>)}
+
+
         </Score>
+
         <div className="card-footer">
-          <a className="card-footer-item"
+          <a
+            className="card-footer-item has-text-primary title is-4"
             href="#addPoint"
             title="Add Point"
             onClick={() => this.incrementScore(1)}
-          >+</a>
+          >
+            +
+          </a>
           <a
-            className="card-footer-item"
+            className="card-footer-item has-text-primary title is-4"
             href="#removePoint"
             title="Remove Point"
             onClick={() => this.incrementScore(-1)}
@@ -86,24 +97,22 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
   onDrop(e: React.DragEvent<Element>): any {
     const dataName = LeaderBoardRecord.getDragName();
     const data = e.dataTransfer.getData(dataName);
-    if (data) {
+    try {
+      if (!data) {
+        console.log("onDrop: No data for " + dataName);
+        return;
+      }
+      if (!this.props.newPlayerWillEnterGame) {
+        console.log("onDrop: No handler for newPlayerWillEnterGame.");
+        return;
+      }
       const record = Object.assign(
         JSON.parse(data),
         LeaderBoardRecord.prototype
       );
-
-      if (
-        this.props.newPlayerWillEnterGame &&
-        this.props.newPlayerWillEnterGame(record.player)
-      ) {
-        console.log(`ScoreBoardPlayer: Added ${record.player.id}.`);
-        this.setState({ isDragging: false });
-        return;
-      }
-      console.log("onDrop: No handler for newPlayerWillEnterGame.");
-      return;
+      this.props.newPlayerWillEnterGame(record.player);
+    } finally {
+      this.setState({ isDragging: false });
     }
-
-    console.log("onDrop: No data for " + dataName);
   }
 }
