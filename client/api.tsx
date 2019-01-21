@@ -43,6 +43,12 @@ export default class Api {
     );
   }
 
+  public static async postPlayer(player: Player): Promise<boolean> {
+    return await Api.postJson("Player", player).then<boolean>(
+      response => response.ok
+    );
+  }
+
   public static updateFetchedLeaderBoardData(
     fetchedData: Array<LeaderBoardRecord>,
     toUpdate: Array<LeaderBoardRecord>
