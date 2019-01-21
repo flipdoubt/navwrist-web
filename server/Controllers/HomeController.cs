@@ -10,6 +10,12 @@ namespace Server.Controllers
 {
   public class HomeController : Controller
   {
+    private readonly IDataAccess _data;
+
+    public HomeController()
+    {
+      _data = new DataAccess();
+    }
     [HttpGet("")]
     public IActionResult Index()
     {
@@ -19,35 +25,26 @@ namespace Server.Controllers
     [HttpGet("LeaderBoard")]
     public async Task<LeaderBoardRecord[]> GetLeaderBoard()
     {
-      return await Task.Run(() =>
-        LeaderBoardData.GetLeaderBoard(_GetSamplePlayers(), _GetSampleCompletedGames()));
+      return await Task.Run(() => _data.GetLeaderBoard());
     }
 
     [HttpGet("LeaderBoard/{playerId}")]
     public async Task<LeaderBoardRecord> GetLeaderBoardRecord(string playerId)
     {
       var guid = new System.Guid(playerId);
-      return await Task.Run(() => LeaderBoardData.ForPlayer(guid));
+      return await Task.Run(() => _data.GetLeaderBoardRecord(guid));
     }
 
     [HttpPost("CompletedGame")]
-    public async Task<bool> PutCompletedGame([FromBody] CompletedGame game){
-      return await Task.Run(() =>
-        LeaderBoardData.UpdateLeaderBoard(game));
+    public async Task<bool> PutCompletedGame([FromBody] CompletedGame game)
+    {
+      return await Task.Run(() => _data.SaveCompletedGame(game));
     }
 
-    private Player[] _GetSamplePlayers()
+    [HttpPost]
+    public async Task<bool> PutPlayer([FromBody] Player player)
     {
-      return new []{
-        new Player() { Id = new System.Guid("57bccba1-dc47-4d08-9cf9-bccfab5c7e72"), Name = "Franko" },
-        new Player() { Id = new System.Guid("a2150ecc-6f92-463c-b6d7-b263bc678dbc"), Name = "Everyone Else" },
-        new Player() { Id = new System.Guid("7c26bdcc-b355-4259-98bc-419553ec289e"), Name = "Xilong" }
-      };
-    }
-
-    private CompletedGame[] _GetSampleCompletedGames()
-    {
-      return new CompletedGame[0];
+      return await Task.Run(() => _data.SavePlayer(player));
     }
 
     public IActionResult Error()
