@@ -58,8 +58,8 @@ Hot Module Replacement (HMR) by running `node run --no-hmr`.
 - ~~Add points in current game~~
 - ~~Win game~~
 - ~~Rematch~~
+- ~~Add player UI~~
+- ~~Put player~~
 - Track current serve
-- Add player UI
 - Database via entity framework
-- Put player
 - Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)

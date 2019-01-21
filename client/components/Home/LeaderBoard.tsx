@@ -1,17 +1,63 @@
 import * as React from "react";
-import Api, { LeaderBoardRecord } from "../../api";
+import Api, { LeaderBoardRecord, Player } from "../../api";
 import AppPanel from "../UI/AppPanel";
 import LeaderBoardRow from "./LeaderBoardRow";
+import PlayerModal from "./PlayerModal";
 
-type LeaderBoardProps = {
+type Props = {
   records: Array<LeaderBoardRecord>;
+  savePlayer: (player: Player) => void;
 };
+const initialState = {
+  showPlayerModal: false
+};
+type State = typeof initialState;
 
-export default class LeaderBoard extends React.Component<LeaderBoardProps, {}> {
+export default class LeaderBoard extends React.Component<Props, State> {
+  readonly state = initialState;
+
+  onAddPlayer(): void {
+    this.setState({ showPlayerModal: true });
+  }
+
+  onSavePlayer(player: Player): void {
+    if (!Player.isNull(player)){
+      this.props.savePlayer(player);
+    }
+    this.setState({ showPlayerModal: false });
+  }
+
+  onCancelPlayer() : void {
+    this.setState({showPlayerModal: false});
+  }
+
   public render() {
     const sorted = Api.sortLeaderBoardData(this.props.records);
     return (
       <AppPanel title="Leaderboard">
+        {!this.state.showPlayerModal
+          ? null
+        : (
+          <PlayerModal
+          title="Add Player"
+          show={this.state.showPlayerModal}
+          player={Player.new()}
+          save={player => this.onSavePlayer(player)}
+          cancel={() => this.onCancelPlayer()}
+        />
+        )}
+
+        <div className="field is-grouped">
+          <div className="control">
+            <button
+              className="button is-outlined"
+              onClick={() => this.onAddPlayer()}
+            >
+              Add Player
+            </button>
+          </div>
+        </div>
+
         <div className="table-container">
           <table className="table is-fullwidth">
             <thead>
@@ -24,9 +70,9 @@ export default class LeaderBoard extends React.Component<LeaderBoardProps, {}> {
               </tr>
             </thead>
             <tbody>
-              {sorted.map((p, i) =>
+              {sorted.map((p, i) => (
                 <LeaderBoardRow key={p.player.id} record={p} rank={i + 1} />
-              )}
+              ))}
             </tbody>
           </table>
         </div>

@@ -21,6 +21,17 @@ export default class Page extends React.Component<
     super(props);
   }
 
+  savePlayer(player: Player): void {
+    Api.postPlayer(player).then(postResponse => {
+      if(!postResponse) return;
+      Api.fetchLeaderBoardRecord(player.id).then(fetchResult => {
+        const {leaderBoardData} = this.state;
+        Api.updateFetchedLeaderBoardData([fetchResult], leaderBoardData);
+        this.setState({leaderBoardData});
+      })
+    });
+  }
+
   gameCompleted(game: CompletedGame) : void {
     Api.postCompletedGame(game).then(response => {
       if (!response) {
@@ -49,7 +60,7 @@ export default class Page extends React.Component<
     return (
       <React.Fragment>
         <Scoreboard gameCompleted={game => this.gameCompleted(game)}/>
-        <Leaderboard records={leaderBoardData} />
+        <Leaderboard records={leaderBoardData} savePlayer={(player) => this.savePlayer(player)} />
       </React.Fragment>
     );
   }

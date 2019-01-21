@@ -8,6 +8,7 @@ type Props = {
   completedGame: CompletedGame;
   newGame?: () => void;
   rematch?: () => void;
+  close?: () => void;
 };
 
 export default function WinnerModal(props: Props) {
@@ -16,6 +17,7 @@ export default function WinnerModal(props: Props) {
   }
   const newGame = props.newGame ? props.newGame : () => {};
   const rematch = props.rematch ? props.rematch : () => {};
+  const close = props.close ? props.close : () => {};
   return (
     <div className="modal is-active">
       <div className="modal-background" />
@@ -26,7 +28,7 @@ export default function WinnerModal(props: Props) {
             {props.winner} wins {props.completedGame.winnerScore} to{" "}
             {props.completedGame.loserScore}
           </p>
-          <button className="delete" />
+          <button className="delete" onClick={() => close()} />
         </header>
         <section className="modal-card-body">
           <div className="content">

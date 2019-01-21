@@ -59,6 +59,7 @@ export default class Api {
         record => record.player.id === fetched.player.id
       );
       if (indexToUpdate >= 0) toUpdate[indexToUpdate] = fetched;
+      else toUpdate.push(fetched);
     });
   }
 

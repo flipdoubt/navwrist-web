@@ -41,7 +41,7 @@ namespace Server.Controllers
       return await Task.Run(() => _data.SaveCompletedGame(game));
     }
 
-    [HttpPost]
+    [HttpPost("Player")]
     public async Task<bool> PutPlayer([FromBody] Player player)
     {
       return await Task.Run(() => _data.SavePlayer(player));

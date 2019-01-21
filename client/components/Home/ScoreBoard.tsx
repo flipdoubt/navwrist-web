@@ -46,6 +46,10 @@ export default class ScoreBoard extends React.Component<Props, State> {
     return true;
   }
 
+  onCloseModal() : void {
+    this.setState({winner: Player.nullPlayer()});
+  }
+
   onNewGame(): void {
     const { currentGame } = this.state;
     currentGame.playerOne = Player.nullPlayer();
@@ -104,6 +108,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
           completedGame={game}
           newGame={() => this.onNewGame()}
           rematch={() => this.onRematch()}
+          close={() => this.onCloseModal()}
         />
         <div className="content">
           <p>
