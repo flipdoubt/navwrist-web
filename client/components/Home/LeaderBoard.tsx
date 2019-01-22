@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Api, { LeaderBoardRecord, Player } from "../../api";
 import AppPanel from "../UI/AppPanel";
 import LeaderBoardRow from "./LeaderBoardRow";
@@ -50,10 +51,10 @@ export default class LeaderBoard extends React.Component<Props, State> {
         <div className="field is-grouped">
           <div className="control">
             <button
-              className="button is-outlined"
+              className="button is-primary is-outlined"
               onClick={() => this.onAddPlayer()}
             >
-              + Add Player
+              <FontAwesomeIcon icon="user-plus" className="icon" /> <span className="icon-button-text">Add Player</span>
             </button>
           </div>
         </div>

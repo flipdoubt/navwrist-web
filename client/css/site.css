@@ -10,3 +10,11 @@ body {
 #app > section.section {
   padding: 1.5rem;
 }
+
+.button-icon-size {
+  font-size: 2rem;
+}
+
+.button-icon-text {
+  margin-left: 1.5rem;
+}

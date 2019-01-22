@@ -65,31 +65,31 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
           <div className={headerClass}>{name}</div>
         </div>
 
-        <Score className="has-text-centered has-text-weight-light has-background-primary">
+        <Score className={"has-text-centered has-text-weight-light " + (this.props.isServing ? "has-background-primary" : "")}>
           <ScoreValue>{this.props.score}</ScoreValue>
           {!this.props.isServing ? null : (
             <ServeIndicator>
-              <FontAwesomeIcon icon="table-tennis" title="serving" />
+              <FontAwesomeIcon icon="table-tennis" title="serving" className="icon title is-2" />
             </ServeIndicator>
           )}
         </Score>
 
         <div className="card-footer">
           <a
-            className="card-footer-item has-text-primary title is-4"
+            className="card-footer-item title is-4 button is-primary is-outlined"
             href="#addPoint"
             title="Add Point"
             onClick={() => this.incrementScore(1)}
           >
-            +
+            <FontAwesomeIcon icon="plus" />
           </a>
           <a
-            className="card-footer-item has-text-primary title is-4"
+            className="card-footer-item title is-4 button is-primary is-outlined"
             href="#removePoint"
             title="Remove Point"
             onClick={() => this.incrementScore(-1)}
           >
-            -
+            <FontAwesomeIcon icon="minus" />
           </a>
         </div>
       </div>
