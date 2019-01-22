@@ -7,13 +7,13 @@ type Props = {
   autoFocus?: boolean;
   placeHolder?: string;
   value: string;
-  handleChange?: (string) => void;
+  valueDidChange?: (string) => void;
 };
 
 // https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 const Input = (props: Props) => {
   const changeHandler = function(source: React.ChangeEvent<HTMLInputElement>) {
-    if (!props.handleChange) {
+    if (!props.valueDidChange) {
       console.log(
         `Add handleChange handler to ${
           props.name
@@ -22,7 +22,7 @@ const Input = (props: Props) => {
       return;
     }
 
-    props.handleChange(source.target.value);
+    props.valueDidChange(source.target.value);
   };
   return (
     <div className="field">

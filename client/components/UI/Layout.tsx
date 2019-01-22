@@ -1,4 +1,8 @@
 import * as React from "react";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faTableTennis } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faTableTennis);
 
 export class Layout extends React.Component<{}, {}> {
   public render() {

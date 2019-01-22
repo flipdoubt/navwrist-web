@@ -45,7 +45,7 @@ export default class PlayerModal extends React.Component <Props, State> {
                 title="Full Name"
                 value={player.name}
                 autoFocus={true}
-                handleChange={value => {
+                valueDidChange={value => {
                   player.name = value;
                   this.setState({player});
                 }}

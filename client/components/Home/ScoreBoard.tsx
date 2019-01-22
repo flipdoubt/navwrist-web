@@ -2,7 +2,7 @@ import * as React from "react";
 import AppPanel from "../UI/AppPanel";
 import { CurrentGame, Player, CompletedGame } from "../../api";
 import ScoreBoardPlayer from "./ScoreBoardPlayer";
-import WinnerModal from "./WinnerModal";
+import GameOverModal from "./GameOverModal";
 
 const initialState = {
   currentGame: CurrentGame.nullGame(),
@@ -46,10 +46,6 @@ export default class ScoreBoard extends React.Component<Props, State> {
     return true;
   }
 
-  onCloseModal() : void {
-    this.setState({winner: Player.nullPlayer()});
-  }
-
   onNewGame(): void {
     const { currentGame } = this.state;
     currentGame.playerOne = Player.nullPlayer();
@@ -63,7 +59,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
     this.setStateNewGame(currentGame);
   }
 
-  scoreChanged(player: Player, newScore: number) {
+  onScoreChanged(player: Player, newScore: number) {
     if (
       Player.isNull(player) ||
       Player.isNull(this.state.currentGame.playerOne) ||
@@ -100,14 +96,12 @@ export default class ScoreBoard extends React.Component<Props, State> {
     return (
       <AppPanel title="Scoreboard">
         {!isFinal ? null : (
-            <WinnerModal
-            show={true}
+            <GameOverModal
             winner={winner.name}
             loser={(winner === playerOne ? playerTwo.name : playerOne.name)}
             completedGame={currentGame.getCompletedGame()}
             newGame={() => this.onNewGame()}
             rematch={() => this.onRematch()}
-            close={() => this.onCloseModal()}
           />
         )}
 
@@ -120,6 +114,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
         <div className="level">
           <div className="level-item">
             <ScoreBoardPlayer
+              title="Player One"
               player={playerOne}
               score={currentGame.playerOneScore}
               isFinal={isFinal}
@@ -127,7 +122,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
               newPlayerWillEnterGame={newPlayer =>
                 this.onNewPlayerOne(newPlayer)
               }
-              scoreChanged={newScore => this.scoreChanged(playerOne, newScore)}
+              scoreDidChange={newScore => this.onScoreChanged(playerOne, newScore)}
             />
           </div>
           <div className="level-item">
@@ -135,6 +130,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
           </div>
           <div className="level-item">
             <ScoreBoardPlayer
+              title="Player Two"
               player={playerTwo}
               score={currentGame.playerTwoScore}
               isFinal={isFinal}
@@ -142,7 +138,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
               newPlayerWillEnterGame={newPlayer =>
                 this.onNewPlayerTwo(newPlayer)
               }
-              scoreChanged={newScore => this.scoreChanged(playerTwo, newScore)}
+              scoreDidChange={newScore => this.onScoreChanged(playerTwo, newScore)}
             />
           </div>
         </div>

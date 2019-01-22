@@ -2,22 +2,16 @@ import * as React from "React";
 import { CompletedGame } from "client/api";
 
 type Props = {
-  show: boolean;
   winner: string;
   loser: string;
   completedGame: CompletedGame;
   newGame?: () => void;
   rematch?: () => void;
-  close?: () => void;
 };
 
-export default function WinnerModal(props: Props) {
-  if (!props.show) {
-    return null;
-  }
+export default function GameOverModal(props: Props) {
   const newGame = props.newGame ? props.newGame : () => {};
   const rematch = props.rematch ? props.rematch : () => {};
-  const close = props.close ? props.close : () => {};
   return (
     <div className="modal is-active">
       <div className="modal-background" />
@@ -28,7 +22,7 @@ export default function WinnerModal(props: Props) {
             {props.winner} wins {props.completedGame.winnerScore} to{" "}
             {props.completedGame.loserScore}
           </p>
-          <button className="delete" onClick={() => close()} />
+          <button className="delete" onClick={() => newGame()} />
         </header>
         <section className="modal-card-body">
           <div className="content">

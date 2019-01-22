@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Api, { Player, LeaderBoardRecord } from "../../api";
 
 const Score = styled.div`
@@ -11,13 +12,20 @@ const ScoreValue = styled.span`
   font-size: 6.5rem;
 `;
 
+const ServeIndicator = styled.span`
+  position: absolute;
+  top: 50%;
+  margin-left: 1rem;
+`;
+
 type Props = {
   player: Player;
+  title?: string;
   isServing?: boolean;
   isFinal?: boolean;
   score: number;
   newPlayerWillEnterGame?: (newPlayer: Player) => boolean;
-  scoreChanged?: (newScore: number) => void;
+  scoreDidChange?: (newScore: number) => void;
 };
 
 const initialState = {
@@ -36,15 +44,15 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
   incrementScore(changeAmount: number) {
     if (this.props.isFinal || Player.isNull(this.props.player)) return;
     const newScore = this.props.score + changeAmount;
-    if (this.props.scoreChanged) this.props.scoreChanged(newScore);
+    if (this.props.scoreDidChange) this.props.scoreDidChange(newScore);
   }
 
   render() {
     const name = Player.isNull(this.props.player)
-      ? "Add Player"
+      ? this.props.title || "Drag Player"
       : this.props.player.name;
-    const draggingClass =
-      "card-header-title title is-3 has-text-weight-light " +
+    const headerClass =
+      "card-header-title title is-3 has-text-weight-light has-text-centered " +
       Api.getDraggingClass(this.state.isDragging);
     return (
       <div
@@ -54,14 +62,16 @@ export default class ScoreBoardPlayer extends React.Component<Props, State> {
         onDrop={e => this.onDrop(e)}
       >
         <div className="card-header">
-          <div className={draggingClass}>{name}</div>
+          <div className={headerClass}>{name}</div>
         </div>
 
-        <Score className="has-text-centered has-text-weight-light">
+        <Score className="has-text-centered has-text-weight-light has-background-primary">
           <ScoreValue>{this.props.score}</ScoreValue>
-          {!this.props.isServing ? null : (<span className="tag is-primary">serving</span>)}
-
-
+          {!this.props.isServing ? null : (
+            <ServeIndicator>
+              <FontAwesomeIcon icon="table-tennis" title="serving" />
+            </ServeIndicator>
+          )}
         </Score>
 
         <div className="card-footer">
