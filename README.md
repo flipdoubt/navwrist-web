@@ -61,7 +61,7 @@ Hot Module Replacement (HMR) by running `node run --no-hmr`.
 - ~~Add player UI~~
 - ~~Put player~~
 - ~~Track current serve~~
+- Database via entity framework
 - Show player record, last scores in scoreboard
 - Animate transitions with [Animista](http://animista.net/)
-- Database via entity framework
 - Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)
