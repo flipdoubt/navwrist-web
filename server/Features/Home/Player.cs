@@ -1,4 +1,6 @@
-namespace Server.Models
+using Server.Infrastructure.Models;
+
+namespace Server.Features.Home
 {
   public class Player : IdModelBase
   {

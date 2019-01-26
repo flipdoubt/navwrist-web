@@ -1,6 +1,6 @@
 using System;
-
-namespace Server.Models
+using Server.Infrastructure.Models;
+namespace Server.Features.Home
 {
   public class CompletedGame : IdModelBase
   {

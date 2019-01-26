@@ -1,10 +1,9 @@
 using System;
 
-namespace Server.Models
+namespace Server.Features.Home
 {
   public class LeaderBoardRecord
   {
-
     public Player Player { get; set; }
     public int Wins { get; set; }
     public int Losses { get; set; }

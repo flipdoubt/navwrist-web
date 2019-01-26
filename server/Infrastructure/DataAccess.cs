@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Server.Models;
+using Server.Features.Home;
 
-namespace Server
+namespace Server.Infrastructure
 {
   public class DataAccess : IDataAccess
   {
