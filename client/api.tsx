@@ -217,6 +217,14 @@ export class CurrentGame {
     return this.playerOneScore > this.playerTwoScore ? 2 : 1;
   }
 
+  public newGame(playerOne: Player, playerTwo: Player) : void {
+    this.playerOne = playerOne;
+    this.playerOneScore = 0;
+    this.playerTwo = playerTwo;
+    this.playerTwoScore = 0;
+    this.startDate = new Date(Date.now());
+  }
+
   public getCompletedGame(): CompletedGame {
     const winner = this.winnerIs();
     if (Player.isNull(winner)) return CompletedGame.nullGame();

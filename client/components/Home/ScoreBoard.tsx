@@ -4,14 +4,16 @@ import { CurrentGame, Player, CompletedGame } from "../../api";
 import ScoreBoardPlayer from "./ScoreBoardPlayer";
 import GameOverModal from "./GameOverModal";
 
+type Props = {
+  gameCompleted?: (CompletedGame) => void;
+};
+
 const initialState = {
   currentGame: CurrentGame.nullGame(),
   winner: Player.nullPlayer()
 };
 type State = Readonly<typeof initialState>;
-type Props = {
-  gameCompleted?: (CompletedGame) => void;
-};
+
 export default class ScoreBoard extends React.Component<Props, State> {
   readonly state = initialState;
 
@@ -20,44 +22,37 @@ export default class ScoreBoard extends React.Component<Props, State> {
     this.setStateNewGame = this.setStateNewGame.bind(this);
   }
 
-  setStateNewGame(currentGame: CurrentGame) {
-    currentGame.playerOneScore = 0;
-    currentGame.playerTwoScore = 0;
-    currentGame.startDate = new Date(Date.now());
+  setStateNewGame(playerOne: Player, playerTwo: Player) : void {
+    const { currentGame } = this.state;
+    currentGame.newGame(playerOne, playerTwo);
     this.setState({ currentGame, winner: Player.nullPlayer() });
   }
 
-  onNewPlayerOne(newPlayer: Player): boolean {
-    const { currentGame } = this.state;
-    currentGame.playerOne = newPlayer;
-    if (this.state.winner === currentGame.playerTwo) {
-      currentGame.playerTwo = Player.nullPlayer();
-    }
-    this.setStateNewGame(currentGame);
+  onNewPlayerOne(playerOne: Player): boolean {
+    const playerTwo = this.state.winner === this.state.currentGame.playerTwo
+      ? Player.nullPlayer()
+      : this.state.currentGame.playerTwo;
+
+    this.setStateNewGame(playerOne, playerTwo);
     return true;
   }
 
-  onNewPlayerTwo(newPlayer: Player): boolean {
+  onNewPlayerTwo(playerTwo: Player): boolean {
     const { currentGame } = this.state;
-    currentGame.playerTwo = newPlayer;
-    if (this.state.winner === currentGame.playerOne) {
-      currentGame.playerOne = Player.nullPlayer();
-    }
-    this.setStateNewGame(currentGame);
+    const playerOne = this.state.winner === currentGame.playerOne
+      ? Player.nullPlayer()
+      : currentGame.playerOne;
+    this.setStateNewGame(playerOne, playerTwo);
     return true;
   }
 
   onNewGame(): void {
-    const { currentGame } = this.state;
-    currentGame.playerOne = Player.nullPlayer();
-    currentGame.playerTwo = Player.nullPlayer();
-    this.setStateNewGame(currentGame);
+    this.setStateNewGame(Player.nullPlayer(), Player.nullPlayer());
   }
 
   onRematch(): void {
-    const { currentGame } = this.state;
-    const rematch = new CurrentGame(currentGame.playerOne, currentGame.playerTwo);
-    this.setStateNewGame(currentGame);
+    this.setStateNewGame(
+      this.state.currentGame.playerOne, this.state.currentGame.playerTwo);
   }
 
   onScoreChanged(player: Player, newScore: number) {
