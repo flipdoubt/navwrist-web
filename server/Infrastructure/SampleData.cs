@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Server.Features.Home;
+using Server.Infrastructure.Models;
 
 namespace Server.Infrastructure
 {

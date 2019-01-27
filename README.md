@@ -62,9 +62,10 @@ Hot Module Replacement (HMR) by running `node run --no-hmr`.
 - ~~Put player~~
 - ~~Track current serve~~
 - ~~Feature Folders~~
-- Database via entity framework
+- ~~Database via entity framework~~
+- Animate transitions with [Animista](http://animista.net/)
 - New Game button (for devices where dragging does not work)
 - Swap button (if next serve tracking needs to reverse)
-- Show player record, last scores in scoreboard
-- Animate transitions with [Animista](http://animista.net/)
+- Update player nickname and avatar
+- Scoreboard should show player record, last scores in scoreboard
 - Calculate [player ranking](https://www.teamusa.org/usa-table-tennis/ratings/rating-system)

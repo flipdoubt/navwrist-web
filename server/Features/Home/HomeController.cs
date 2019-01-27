@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Server.Infrastructure;
+using Server.Infrastructure.Models;
 
 namespace Server.Features.Home
 {
@@ -12,10 +10,11 @@ namespace Server.Features.Home
   {
     private readonly IDataAccess _data;
 
-    public HomeController()
+    public HomeController(IDataAccess data)
     {
-      _data = new DataAccess();
+      _data = data;
     }
+
     [HttpGet("")]
     public IActionResult Index()
     {

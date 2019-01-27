@@ -32,9 +32,9 @@ function getSampleData(success = true): Data {
   data.players[player1.id] = player1;
   data.players[player2.id] = player2;
   const game1 = CompletedGame.new();
-  game1.winner = player1.id;
+  game1.winnerId = player1.id;
   game1.winnerScore = 21;
-  game1.loser = player2.id;
+  game1.loserId = player2.id;
   data.completedGames[game1.id] = game1;
   return data;
 }

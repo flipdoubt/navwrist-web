@@ -1,6 +1,6 @@
 using Server.Infrastructure.Models;
 
-namespace Server.Features.Home
+namespace Server.Infrastructure.Models
 {
   public class Player : IdModelBase
   {

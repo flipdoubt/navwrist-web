@@ -23,6 +23,7 @@ export default class ScoreBoard extends React.Component<Props, State> {
   setStateNewGame(currentGame: CurrentGame) {
     currentGame.playerOneScore = 0;
     currentGame.playerTwoScore = 0;
+    currentGame.startDate = new Date(Date.now());
     this.setState({ currentGame, winner: Player.nullPlayer() });
   }
 
@@ -86,7 +87,8 @@ export default class ScoreBoard extends React.Component<Props, State> {
 
     this.setState({ currentGame, winner });
     if (!this.props.gameCompleted) return;
-    this.props.gameCompleted(currentGame.getCompletedGame());
+    const completedGame = currentGame.getCompletedGame();
+    this.props.gameCompleted(completedGame);
   }
 
   public render() {

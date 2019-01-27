@@ -1,6 +1,6 @@
 using System;
 
-namespace Server.Features.Home
+namespace Server.Infrastructure.Models
 {
   public class LeaderBoardRecord
   {

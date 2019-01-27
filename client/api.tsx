@@ -99,9 +99,9 @@ export class CompletedGame {
   private static _nullGame: CompletedGame;
   constructor(
     public id: string = "",
-    public winner: string = "",
+    public winnerId: string = "",
     public winnerScore: number = 0,
-    public loser: string = "",
+    public loserId: string = "",
     public loserScore: number = 0,
     public startDate?: Date,
     public endDate?: Date
@@ -222,17 +222,19 @@ export class CurrentGame {
     if (Player.isNull(winner)) return CompletedGame.nullGame();
 
     const game = CompletedGame.new();
-    game.winner = winner.id;
+    game.winnerId = winner.id;
+    game.startDate = this.startDate;
+    game.endDate = new Date(Date.now());
 
     if (this.playerOne === winner) {
       game.winnerScore = this.playerOneScore;
-      game.loser = this.playerTwo.id;
+      game.loserId = this.playerTwo.id;
       game.loserScore = this.playerTwoScore;
       return game;
     }
 
     game.winnerScore = this.playerTwoScore;
-    game.loser = this.playerOne.id;
+    game.loserId = this.playerOne.id;
     game.loserScore = this.playerOneScore;
     return game;
   }

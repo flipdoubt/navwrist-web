@@ -39,8 +39,8 @@ export default class Page extends React.Component<
       }
 
       Promise.all([
-        Api.fetchLeaderBoardRecord(game.winner),
-        Api.fetchLeaderBoardRecord(game.loser)
+        Api.fetchLeaderBoardRecord(game.winnerId),
+        Api.fetchLeaderBoardRecord(game.loserId)
       ]).then(result => {
         const {leaderBoardData} = this.state;
         Api.updateFetchedLeaderBoardData(result, leaderBoardData);
