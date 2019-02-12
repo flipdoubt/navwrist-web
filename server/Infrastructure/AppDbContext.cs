@@ -20,7 +20,7 @@ namespace Server.Infrastructure
     public DbQuery<LeaderBoardRecord> LeaderBoard { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {}
+    { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -28,9 +28,17 @@ namespace Server.Infrastructure
         .Query<LeaderBoardRecord>()
         .ToQuery(() => Players.Select(p => new LeaderBoardRecord
         {
-          Player = p, Wins = CompletedGames.Count(g => g.WinnerId == p.Id),
+          Player = p,
+          Wins = CompletedGames.Count(g => g.WinnerId == p.Id),
           Losses = CompletedGames.Count(g => g.LoserId == p.Id)
         }));
+
+      /*
+SELECT p.*, WinCount, LossCount
+FROM Players p INNER JOIN
+(SELECT WinnerId, COUNT(1) WinCount FROM CompletedGames GROUP BY WinnerId) w ON p.Id = w.WinnerId INNER JOIN
+(SELECT LoserId, COUNT(1) LossCount FROM CompletedGames GROUP BY LoserId) l ON p.Id = l.LoserId
+       */
     }
   }
 }
